@@ -1,0 +1,1 @@
+brcc32  help.rc

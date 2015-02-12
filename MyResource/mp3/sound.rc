@@ -1,0 +1,6 @@
+WERROR MY "error.mp3"
+WFILE MY "file.mp3"
+WIN MY "in.mp3"
+WOFFLINE MY "offline.mp3"
+WONLINE MY "online.mp3"
+WOUT MY "out.mp3"

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=windows-1251" http-equiv="content-type">
+<title>setuppage</title>
+<style type="text/css">
+  .title {background: silver; width: 100%; }
+</style></head>
+<body>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="width: 10%; text-align: left; vertical-align: top;">
+<a href=#avatar>Аватар</a><br>
+<a href=#personal>Личные</a><br>
+<a href=#interface>Интерфейс</a><br>
+<a href=#common>Общие</a><br>
+<a href=#contacts>Контакты</a><br>
+<a href=#font>Шрифт</a><br>
+<a href=#tray>Трей</a><br>
+<a href=#sound>Звуки</a><br>
+<a href=#lang>Язык</a><br>
+<a href=#traf>Трафик</a><br>
+</td>
+<td style="text-align: left; vertical-align: top;">
+	<div id="personal" style="display:"><a name="personal"></a>
+		<div id="av_label" class="title">Аватар</div>
+			<table>
+			<tbody>
+			<tr>
+			<td><img id="av_image" style="border: 1px solid ; width: 100px; height: 100px;" alt="" src="../myavatar.jpg">
+			</td>
+			<td>
+			<input type=button style="width: 80px; height: 25px;" id="av_load" value=Загрузить onclick="av_load"><br>
+			<br>
+			<input type=button style="width: 80px; height: 25px;" id="av_del" value=Удалить onclick="av_del">
+			</td>
+			<td></td>
+			</tr>
+			</tbody>
+			</table>
+	<div id="personal" style="display:"><a name="personal"></a>
+		<div id="av_label" class="title">Личные</div>
+		<div id="nik" class="title">Ник</div>
+			<span id="NickLabel">Ник</span> 
+			<input id="edit_nick" type="text">
+		<div id="dr" class="title">Д/р </div>
+			<span id="BirthdayLabel">дд.мм.гггг</span>
+			<input id="edit_dr" type="text">
+		<div id="mg" class="title">Пол</div>
+			<input id=mg0 name="mg" value="0" type="radio"><span id="mgtext0">М</span> 
+			<input id=mg1 name="mg" value="1" type="radio"><span id="mgtext1">Ж</span>
+	</div>
+
+		<div id="contakt" class="title">Контакты</div>
+			<div style="width: 300px; border: 1px solid gray;"><span>Аватар</span><br>
+			<span>Смайлик</span><input type="radio" name="av" value="0">
+			<span>Слева</span><input type="radio" name="av" value="1">
+			<span>Справа</span><input type="radio" name="av" value="2">
+			</div>
+			<input type="checkbox" id=CheckLines><span>Полоска разделитель</span><br>
+			<input type="checkbox" id=CheckInfo><span>Показывать окно с информацией о контакте</span><br>
+			<input type="checkbox" id=CheckNick><span>Принимать и показывать чужие ники</span><br>
+			<input type="checkbox" id=CheckOffline><span>Показывать оффлайн</span><br>
+			<div style="width: 300px; border: 1px solid gray;"><span>Сортировка</span><br>
+			<span>По имени</span><input type="radio" name="sortmode" value="0">
+			<span>По списку</span><input type="radio" name="sortmode" value="1">
+			<input type="checkbox" id=CheckOfflineEnd><span>Оффлайн в конце</span>
+			</div>
+		<div id="panels" class="title">Панели</div>
+			<input type="checkbox" id=CheckBig><span>Большие кнопки</span>
+		<div id="pages" class="title">Вкладки</div>
+			<span>Расположение</span>
+			<select>
+				<option value=0>Вверху</option>
+				<option value=1>Внизу</option>				
+			</select><br>
+			<span>Значок</span>
+			<select>
+				<option value=0>Флажки</option>
+				<option value=1>Стрелки 1</option>				
+				<option value=2>Стрелки2</option>				
+			</select><br>
+			<input type="checkbox" id=CheckActPage><span>Переходить на вкладку с непрочитанными</span><br>
+			<input type="checkbox" id=CheckRGB><span>Показывать в меню Зел/Син/Кр каналы</span><br>
+			<input type="checkbox" id=CheckPagesOneLine><span>Вкладки в несколько строк</span><br>
+		<div id="fon" class="title">Цвет фона</div>
+			<div id=memocolor style="width: 300px; border: 1px solid gray; background: green"></div>
+
+	<div class="titler">Общие</div>
+		<div class="title">Ввод</div>
+			<input type="checkbox" name=check_not><span>Ctrl-Enter/Enter - отправить/перевод строки или Enter/Ctrl-Enter</span><br>
+			<select name=combo_snap>
+				<option value=0>Ctrl</option>
+				<option value=1>Alt</option>				
+				<option value=2>Win</option>				
+			</select>
+			<input name=edit_snap type=text size=1><br>
+		<div class="title">Подтверждения</div>
+   			<input type="checkbox" name=checkdelete><span>Подтверждать очистку трафика</span><br>
+   			<input type="checkbox" name=checkurl><span>Подтверждать открытие ссылки</span><br>
+   			<input type="checkbox" name=checkclosepage><span>Подтверждать закрытие вкладок</span><br>
+   			<input type="checkbox" name=checkdelmsg><span>Подтверждать удаление сообщений</span><br>
+
+</td>
+</tr>
+</tbody>
+</table>
+</body></html>

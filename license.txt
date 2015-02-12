@@ -1,0 +1,5 @@
+{
+ALR RAV (c) 200-2014
+The contents of this file are subject to the GNU General Public License, version 3
+http://opensource.org/licenses/gpl-3.0.html
+}
