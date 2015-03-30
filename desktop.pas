@@ -9,7 +9,6 @@ type
 
 Function Taskbar: integer;
 Function TaskbarPos: Tpos;
-//function IsTop(title: string): boolean;
 function WindowTitle: integer;
 function WindowBorder: integer;
 function SysButtonWidth: integer;
@@ -18,6 +17,7 @@ function isThemesActive:boolean;
 function GetLayoutShortName: String;
 function MenuWidth(menu:TPopupMenu):integer;
 function MenuHeight: integer;
+function ScrollBar: integer;
 
 implementation
 
@@ -83,6 +83,12 @@ begin
   end;
 end;
 {$WARNINGS ON}
+
+function ScrollBar: integer;
+begin
+  result := GetSystemMetrics(SM_CXHSCROLL);
+end;
+
 
 function SysButtonWidth: integer;
 begin

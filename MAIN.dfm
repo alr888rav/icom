@@ -208,7 +208,7 @@ object mainForm: TmainForm
     Width = 220
     Height = 488
     Align = alRight
-    BevelEdges = [beTop]
+    BevelEdges = []
     BevelOuter = bvNone
     Constraints.MaxWidth = 400
     Constraints.MinWidth = 220
@@ -227,15 +227,16 @@ object mainForm: TmainForm
       Width = 220
       Height = 20
       Align = alTop
-      BevelEdges = []
-      BevelKind = bkFlat
-      BevelOuter = bvNone
+      BevelEdges = [beBottom]
+      BevelOuter = bvSpace
+      Color = clWindow
+      ParentBackground = False
       TabOrder = 0
       object MenuButton: TSpeedButton
-        Left = 150
-        Top = 0
+        Left = 149
+        Top = 1
         Width = 70
-        Height = 17
+        Height = 18
         Align = alRight
         Caption = #1048#1050#1054#1052
         Flat = True
@@ -247,32 +248,7 @@ object mainForm: TmainForm
         ParentFont = False
         OnClick = MenuButtonClick
         ExplicitLeft = 1008
-        ExplicitTop = 1
         ExplicitHeight = 22
-      end
-      object Shape1: TShape
-        Left = 0
-        Top = 17
-        Width = 220
-        Height = 1
-        Align = alBottom
-        Brush.Color = clBtnFace
-        Pen.Color = cl3DLight
-        ExplicitLeft = 155
-        ExplicitTop = 19
-        ExplicitWidth = 65
-      end
-      object Panel1: TPanel
-        Left = 0
-        Top = 18
-        Width = 220
-        Height = 2
-        Align = alBottom
-        BevelOuter = bvNone
-        TabOrder = 0
-        ExplicitLeft = 48
-        ExplicitTop = 8
-        ExplicitWidth = 185
       end
     end
   end
@@ -295,8 +271,7 @@ object mainForm: TmainForm
       Height = 2
       Cursor = crVSplit
       Align = alBottom
-      ExplicitTop = 492
-      ExplicitWidth = 882
+      ExplicitTop = 272
     end
     object PageControl1: TPageControl
       Tag = -1
@@ -541,8 +516,24 @@ object mainForm: TmainForm
         Width = 862
         Height = 54
         Align = alTop
+        BevelEdges = [beTop, beBottom]
+        BevelKind = bkSoft
+        BevelOuter = bvNone
+        Color = clWindow
+        ParentBackground = False
         TabOrder = 1
         OnResize = PanelTools1Resize
+        object RightPanel: TPanel
+          Left = 845
+          Top = 0
+          Width = 17
+          Height = 50
+          Align = alRight
+          BevelOuter = bvNone
+          Color = cl3DLight
+          ParentBackground = False
+          TabOrder = 0
+        end
       end
     end
   end
@@ -561,7 +552,8 @@ object mainForm: TmainForm
       Width = 100
       Height = 22
       Align = alRight
-      ExplicitLeft = 996
+      ExplicitLeft = 989
+      ExplicitTop = 6
     end
     object PluginPanel: TPanel
       Left = 1
@@ -675,7 +667,7 @@ object mainForm: TmainForm
     Left = 504
     Top = 208
     Bitmap = {
-      494C01010D001800200018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010D001800280018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1875,7 +1867,7 @@ object mainForm: TmainForm
     Left = 448
     Top = 208
     Bitmap = {
-      494C010104001800180010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010104001800200010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2255,7 +2247,7 @@ object mainForm: TmainForm
     Left = 560
     Top = 208
     Bitmap = {
-      494C010103000400E00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000400E80210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       000000000000000000000000000000000000000000002CAA25002CAA25002CAA
       25002CAA25002CAA25002CAA25002BA824002BA824002BA824002CAA25002CAA
@@ -2412,7 +2404,7 @@ object mainForm: TmainForm
     Left = 664
     Top = 208
     Bitmap = {
-      494C010102000800180010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010102000800200010001000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2564,7 +2556,7 @@ object mainForm: TmainForm
     Left = 312
     Top = 208
     Bitmap = {
-      494C010108001800880114001400FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C010108001800900114001400FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000500000003C0000000100200000000000004B
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3200,7 +3192,7 @@ object mainForm: TmainForm
     Left = 176
     Top = 208
     Bitmap = {
-      494C010107000800240012001200FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C0101070008002C0012001200FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000480000002400000001002000000000008028
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

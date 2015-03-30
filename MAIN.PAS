@@ -20,7 +20,8 @@ uses
   icomView, language, icomNet, icomplugins, setting, icomchannels, icomuserbox,
   psAPI, JvComponentBase,
   JvXPCore, JvXPButtons,
-  Vcl.OleCtrls, SHDocVw;
+  Vcl.OleCtrls, SHDocVw
+  ,myPageControl;
 
 const
   WM_POWERBROADCAST = $0218;
@@ -108,8 +109,7 @@ type
     InOutPanel: TImage;
     MenuPanel: TPanel;
     MenuButton: TSpeedButton;
-    Shape1: TShape;
-    Panel1: TPanel;
+    RightPanel: TPanel;
     procedure FreeRes;
     function SetUserStatus(FromIP: string; sl: TstringList): boolean;
     procedure memoinDragDrop(Sender, Source: TObject; X, Y: Integer);
@@ -454,52 +454,6 @@ function red:string;
 begin
   Result := lang.Get('red');
 end;
-{
-procedure TPageControl.WMPaint(var Message: TWMPaint);
-var
-  h, h2: HDC;
-  N: integer;
-  dl: integer;
-begin
-  inherited;
-  h:= Canvas.Handle;
-  h2 := GetDC(Handle);
-  N:= SaveDC(h2);
-  Canvas.Handle := h2;
-  Canvas.Pen.Color := clBtnFace;
-  Canvas.Pen.Style := psSolid;
-  // top border
-  Canvas.Pen.Width := 2;
-  Canvas.MoveTo(0, TabHeight+4);
-  Canvas.LIneTo(ClientWidth-1, TabHeight+4);
-  // left border
-  Canvas.Pen.Width := 3;
-  Canvas.MoveTo(1, TabHeight+4);
-  Canvas.LIneTo(1, ClientHeight-3);
-  // bottom border
-  Canvas.Pen.Width := 3;
-  Canvas.MoveTo(0, ClientHeight-3);
-  Canvas.LIneTo(ClientWidth-1, ClientHeight-3);
-  // right border
-  Canvas.Pen.Width := 3;
-  Canvas.MoveTo(ClientWidth-1, ClientHeight-3);
-  Canvas.LIneTo(ClientWidth-1, TabHeight+3);
-  if self.TabPosition = tpBottom then
-  begin
-    // line between bottom and tab
-    if self.TabHeight = 0 then
-      dl := 20
-    else
-      dl := self.Height - self.Pages[0].Height;
-    //Canvas.Pen.Color := clred;
-    Canvas.Pen.Width := 1;
-    Canvas.MoveTo(2, ClientHeight-dl+5);
-    Canvas.LIneTo(ClientWidth-2, ClientHeight-dl+5);
-  end;
-  Canvas.Handle := h;
-  RestoreDC(h2, N);
-  DeleteDC(h2);
-end;  }
 
 procedure TmainForm.FontButtonMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -532,36 +486,46 @@ end;
 
 // индикатор приема
 procedure TmainForm.WmIn(var msg: TMessage);
+var
+  bgColor: TColor;
 begin
+  bgColor := PluginPanel.Color;
   if msg.WParam = 1 then
   begin
-    InOutPanel.Canvas.Pen.Color := clBtnFace;
+    InOutPanel.Canvas.Pen.Color := bgColor;
+    InOutPanel.Canvas.Brush.Color := bgColor;
+    InOutPanel.Canvas.FillRect(InOutPanel.ClientRect);
     InOutPanel.Canvas.Brush.Color := clGreen;
     InOutPanel.Canvas.Rectangle(30,4,42,16);
   end
   else
   begin
-    InOutPanel.Canvas.Pen.Color := InOutPanel.Canvas.Pixels[0,0];
-    InOutPanel.Canvas.Brush.Color := InOutPanel.Canvas.Pixels[0,0];
-    InOutPanel.Canvas.Rectangle(30,4,42,16);
+    InOutPanel.Canvas.Pen.Color := bgColor;
+    InOutPanel.Canvas.Brush.Color := bgColor;
+    InOutPanel.Canvas.FillRect(InOutPanel.ClientRect);
   end;
   Application.ProcessMessages;
 end;
 
 // индикатор отправки
 procedure TmainForm.WmOut(var msg: TMessage);
+var
+  bgColor: TColor;
 begin
+  bgColor := PluginPanel.Color;
   if msg.WParam = 1 then
   begin
-    InOutPanel.Canvas.Pen.Color := clBtnFace;
+    InOutPanel.Canvas.Pen.Color := bgColor;
+    InOutPanel.Canvas.Brush.Color := bgColor;
+    InOutPanel.Canvas.FillRect(InOutPanel.ClientRect);
     InOutPanel.Canvas.Brush.Color := clred;
     InOutPanel.Canvas.Rectangle(50,4,62,16);
   end
   else
   begin
-    InOutPanel.Canvas.Pen.Color := InOutPanel.Canvas.Pixels[0,0];
-    InOutPanel.Canvas.Brush.Color := InOutPanel.Canvas.Pixels[0,0];
-    InOutPanel.Canvas.Rectangle(50,4,62,16);
+    InOutPanel.Canvas.Pen.Color := bgColor;
+    InOutPanel.Canvas.Brush.Color := bgColor;
+    InOutPanel.Canvas.FillRect(InOutPanel.ClientRect);
   end;
   Application.ProcessMessages;
 end;
@@ -616,8 +580,18 @@ var
   fi: TFontInfo;
 begin
   LoadButtons;
-  NewTraf(Setup.traflimit);
+  if Setup.checktraf then
+    NewTraf(Setup.traflimit);
   ClearCacheImages;
+
+  // цвета
+  PanelTools1.Color := clWindow;
+  PanelFont.Color := clWindow;
+  MenuPanel.Color := clWindow;
+  PluginPanel.Color := clWindow;
+  LogPanel.Color := clWindow;
+  in_label(false);
+  MenuButton.Flat := ThemesActive;
 
   // иконки для трея
   TrayIcon.icons := iconList;
@@ -627,9 +601,10 @@ begin
   minisize := 32;
 
   PageControl1.MultiLine := Setup.MultirowPages;
-  PageControl1.TabHeight := 28;
-  MenuPanel.Height := 28+6;  // +border+margin?
+  PageControl1.TabHeight := 30;
+  MenuPanel.Height := 30+4;  // +3D border?
   MenuPanel.BevelEdges := [];
+  RightPanel.Width := ScrollBar;
 
   PanelTools1Resize(nil);
   fi := TFontInfo.Create(nil);
@@ -698,15 +673,6 @@ begin
   ItalicFontBtn.Flat := flt;
   btnUnderline.Flat := flt;
   btnStrike.Flat := flt;
-
-  case Setup.tabspos of
-    0:
-      PageControl1.TabPosition := tpTop;
-    1:
-      PageControl1.TabPosition := tpBottom;
-  else
-    PageControl1.TabPosition := tpTop;
-  end;
   //
   PageControl1.ShowHint := false;
   //
@@ -723,7 +689,6 @@ begin
     3:
       LoadKeyboardLayout('00000422', KLF_ACTIVATE); // укр
   end;
-  //rMenu(Setup.rmenu);
 end;
 
 Procedure TmainForm.showballon(head, text: string; show_time: Integer);
@@ -766,7 +731,6 @@ procedure TmainForm.NewLog(msg: string);
 begin
   LogPanel.Caption := msg;
   StatusBar1.Refresh;
-//  self.refresh;
   Last_log := now;
 end;
 
@@ -942,7 +906,6 @@ begin
           user_list[i].winver := getsl(sl, 'WINVER');
           user_list[i].ex_status := URLdecode(getsl(sl, 'EXSTATUS'));
           user_list[i].oname := URLdecode(getsl(sl, 'NICKNAME'));
-          //user_list[i].winstatus := visible2;
           user_list[i].idletime := toint(getsl(sl, 'LASTINPUT'));
           user_list[i].Channels := URLdecode(getsl(sl, 'CHLIST'));
           user_list[i].file_protocol := toint(getsl(sl, 'FILE_VER'));
@@ -1174,7 +1137,6 @@ begin
 
   // отображение пользователей
   User_box:=TUserBox.Create(Panel_user_box);
-  //User_box.ImageList:= StatusList;
   User_box.UserList:=user_list;
   User_box.Display.PopupMenu:=PopupUserList; // wbpopup
 
@@ -1208,8 +1170,6 @@ begin
   PageRefresh(true); // переключим туда-сюда чтобы заработало отображение
   PluginPanel.Caption := '';
   PluginPanel.Width := 0;
-    // кнопки
-  //LoadButtons;
   log('formCreate');
 end;
 
@@ -1240,7 +1200,6 @@ begin
   Channels.Channel[ChName].AddSysText(Setup.Myname, trim(ChName), dt + timetostr(time) + ' [' + Setup.Myname + ']' +
     user_list[Setup.Myip].ex_status + komu, HTMLColor(Setup.sysFont.color));
   Channels.Channel[ChName].AddText('', trim(ChName), msg);
-  ///Channels.Channel[ChName].Reload(Setup.autoscroll);
   if Setup.autoscroll then
     Channels.Channel[ChName].GoEnd;
   if Setup.saveTraf then
@@ -1907,11 +1866,11 @@ end;
 // старт
 procedure TmainForm.FormActivate(Sender: TObject);
 begin
-  //rMenu(Setup.rmenu);
   memoin.color := Setup.Wincolor;
   MySetFocus(memoin);
   MigIcon(0);
-  NewTraf(Setup.traflimit);
+  if Setup.checktraf then
+    NewTraf(Setup.traflimit);
   CheckFreeSpace(Path, 3, true);
   SizeIcom;
   PosIcom;
@@ -2819,7 +2778,8 @@ begin
       log('power wake up');
       Timer1sek.Enabled := false;
       start_time := now;
-      NewTraf(Setup.traflimit);
+      if Setup.checktraf then
+        NewTraf(Setup.traflimit);
       ClearCacheImages;
       if (Setup.checkexit) and (idle_time > Setup.idleexit * 3600) then
         Application.Terminate
@@ -3007,17 +2967,6 @@ procedure TmainForm.UserRefrClick(Sender: TObject);
 begin
   TestAvatar;
   user_list[Setup.myIP].big_time := Now;
-{
-  if fileexists(path + myavatar) then
-  begin
-    try
-      user_list[Setup.myIP].big.LoadFromFile(path + myavatar);
-      user_list[Setup.myIP].big.SaveToFile(cacheDir + inttostr(user_list[Setup.myIP].randId) + '.jpg');
-    except
-      on e: exception do
-        log('bad avatar 3: '+e.Message);
-    end;
-  end;}
   user_box.SelectAll;
   user_box.UpdateBox(true);
 end;
@@ -3096,100 +3045,6 @@ begin
         NewTab(url, true, FREE_CH);
         bCancel := true;
       end
-      // показать полное
-      {else if Pos('ICOM2:', uppercase(url)) = 1 then
-      begin
-        lbl := copy(url, 9, length(url) - 8);
-        // исходник html
-        doc := TStringList.Create;
-        doc.text := Channels[ChName].html;
-        ready := 0;
-        for i := 0 to doc.Count - 1 do
-        begin
-          if Pos('id=' + lbl + '_1', doc.Strings[i]) <> 0 then
-          begin
-            ready := ready +1;
-            doc.Strings[i] := stringreplace(doc.Strings[i],'display: ;', 'display: none;',[]);
-          end;
-          if Pos('id=' + lbl + '_2', doc.Strings[i]) <> 0 then
-          begin
-            ready := ready +1;
-            doc.Strings[i] := stringreplace(doc.Strings[i],'display: none;', 'display: ;',[]);
-          end;
-          if ready >= 2 then
-            break;
-        end;
-        Channels[ChName].html := doc.Text;
-        Channels[ChName].Reload(false);
-        doc.Free;
-        bCancel := true;
-      end
-      // скрыть длинное
-      else if Pos('ICOM3:', uppercase(url)) = 1 then
-      begin
-        lbl := copy(url, 9, length(url) - 8);
-        // исходник html
-        doc := TStringlist.Create;
-        doc.Text := Channels[ChName].html;
-        ready := 0;
-        for i := 0 to doc.Count - 1 do
-        begin
-          if Pos('id=' + lbl + '_1', doc.Strings[i]) <> 0 then
-          begin
-            ready := ready +1;
-            doc.Strings[i] := stringreplace(doc.Strings[i],'display: none;', 'display: ;',[]);
-          end;
-          if Pos('id=' + lbl + '_2', doc.Strings[i]) <> 0 then
-          begin
-            ready := ready +1;
-            doc.Strings[i] := stringreplace(doc.Strings[i],'display: ;', 'display: none;',[]);
-          end;
-          if ready >= 2 then
-            break;
-        end;
-        Channels[ChName].html := doc.Text;
-        Channels[ChName].Reload(false);
-        doc.Free;
-        bCancel := true;
-      end  }
-      {// удалить сообщение
-      else if Pos('ICOM4:', uppercase(url)) = 1 then
-      begin
-        try
-          if setup.confirmdelmsg then
-            if messagedlg(lang.get('delete'), mtconfirmation, [mbYes, mbNo], 0) <> mrYes then
-              exit;
-          lbl := copy(url, 9, length(url) - 8);
-          // исходник html
-          doc := TStringList.Create;
-          doc.Text := Channels[ChName].html;
-          i := 0;
-          while i <= doc.Count - 1 do
-          begin
-            if Pos('id=' + lbl, doc.Strings[i]) <> 0 then
-            begin
-              doc.delete(i);
-              break;
-            end
-            else
-              i := i + 1;
-          end;
-          while (i <= doc.Count - 1)and(Pos('</body>', doc.Strings[i]) = 0) do
-          begin
-            if (Pos('nick=', doc.Strings[i]) = 0) then
-              doc.delete(i)
-            else
-              break;
-          end;
-          Channels[ChName].html := doc.Text;
-          Channels[ChName].Reload(false);
-          doc.Free;
-          bCancel := true;
-        except
-          on e: exception do
-            log('can`t delete msg: '+e.Message);
-        end;
-      end }
       // цитировать сообщение
       else if Pos('ICOM6:', uppercase(url)) = 1 then
       begin
@@ -3404,7 +3259,7 @@ begin
   CitBtn.left := SmileBtn3.left + SmileBtn3.width + Space;
   FileBtn.left := CitBtn.left + CitBtn.width + Space;
   ClearBtn.left := FileBtn.left + FileBtn.width + Space;
-  SendBtn.left := PanelTools1.width - SendBtn.width - Margin;
+  SendBtn.left := PanelTools1.width - SendBtn.width - Margin - ScrollBar;
   if SendBtn.left <  ClearBtn.left + ClearBtn.width +Space then
     SendBtn.left := ClearBtn.left + ClearBtn.width +Space
 end;
@@ -4079,7 +3934,6 @@ begin
   Setup.autoscroll := not Setup.autoscroll;
   if (Setup.autoscroll) and (PageControl1.ActivePageIndex >= 0) then
   begin
-    ///Channels.Channel[PageControl1.activepage.caption].Reload(Setup.autoscroll);
     Channels.Channel[PageControl1.activepage.caption].GoEnd;
   end;
 end;
@@ -4279,7 +4133,7 @@ var
   Size: Integer;
   btop: Integer;
 begin
-  PanelTools1.Height := 32;
+  PanelTools1.Height := 34;
   Size := 30;
   btop := 0;
   if not assigned(FontSetupButton) then
@@ -4675,7 +4529,6 @@ var
 begin
   ch := lang.Get('green');
   Channels.Channel[ch].AddText('', ch, msg);
-  ///Channels.Channel[ch].Reload(Setup.autoscroll);
 end;
 
 initialization

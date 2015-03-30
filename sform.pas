@@ -35,9 +35,7 @@ type
     CheckquickSmiles: TCheckBox;
     Panel3: TPanel;
     Panel5: TPanel;
-    PagesPosLabel: TLabel;
     PagesIconLabel: TLabel;
-    ComboTabs: TComboBox;
     ComboIcons: TComboBox;
     CheckActPage: TCheckBox;
     CheckRGB: TCheckBox;
@@ -182,7 +180,6 @@ type
     Panel41: TPanel;
     Panel43: TPanel;
     CheckSmiles: TCheckBox;
-    Label1: TLabel;
     CheckSaveTraf: TCheckBox;
     lbl1: TLabel;
     procedure LoadAvBtnClick(Sender: TObject);
@@ -408,7 +405,7 @@ begin
   Edit_traf.text := inttostr(Setup.traflimit);
 
   ComboIcons.ItemIndex := Setup.Channelicons;
-  ComboTabs.ItemIndex := Setup.tabspos;
+  //ComboTabs.ItemIndex := Setup.tabspos;
   CheckDelMsg.checked := Setup.confirmdelmsg;
 
   CheckZoom.checked := Setup.zoom;
@@ -590,7 +587,7 @@ begin
     Setup.Channelicons := ComboIcons.ItemIndex;
     CheckZoom.Enabled := true;
     ComboZoom.Enabled := true;
-    Setup.tabspos := ComboTabs.ItemIndex;
+    //Setup.tabspos := ComboTabs.ItemIndex;
     Setup.confirmdelmsg := CheckDelMsg.checked;
 
     Setup.delbtn := ComboDel.ItemIndex;

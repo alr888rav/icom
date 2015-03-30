@@ -44,7 +44,7 @@ begin
       // активная кнопка
       if state then
       begin
-        Brush.color:=clMaroon; //$2C43B8;
+        Brush.color:=clMaroon;
         fillrect(rect);
       end
       else
@@ -72,12 +72,9 @@ var
  inactive_color:TColor;
  rt:TRect;
 const
- active_color= clActiveCaption; //clMenuHighlight;
+ active_color= clActiveCaption;
 begin
-  if ThemesActive then
-    inactive_color := clWindow
-  else
-    inactive_color := clBtnFace;
+  inactive_color := clWindow;
   with Control.Canvas do
   begin
     lock;
@@ -86,7 +83,6 @@ begin
       if state then
       begin
          brush.color:=Active_color;
-         rect.Bottom := rect.Bottom - 1;
          fillrect(rect);
       end
       else
@@ -99,15 +95,16 @@ begin
            rt:=rect;
            moveto(rt.Left-4, rt.Top+1);
            lineto(rt.Left-4, rt.Bottom+2);
-           pen.color := clWhite;
+           pen.color := inactive_color;
            moveto(rt.Left-3, rt.Top+1);
            lineto(rt.Left-3, rt.Bottom+2);
+           rt.Top := rt.Top - 5;
            rt.left:=rt.left-3;
            fillrect(rt);
          end
          else
          begin
-           pen.color := clWhite;
+           pen.color := inactive_color;
            moveto(rect.Left-3, rect.Top-2);
            lineto(rect.Left-3, rect.Bottom-2);
            fillrect(rect);
@@ -116,11 +113,19 @@ begin
       bm:=tbitmap.create;
       try
         if TPageControl(Control).TabPosition=tpTop then
-          dl:=1
+        begin
+          if state then
+            dl:=1
+          else
+            dl:=2;
+        end
         else
-          dl:=-1;
-        if not state then
-          dl:=dl+2;
+        begin
+          if state then
+            dl:=-1
+          else
+            dl:=-2;
+        end;
         bm.transparent:=true;
         // получение картинки
         if (Tpagecontrol(control).pages[index].imageindex>=0)
@@ -134,7 +139,10 @@ begin
           bm.TransParentColor := BM.Canvas.pixels[1,1];
         end;
         // название
-        Font.Color:=clblack;
+        if (not State)or(ThemesActive) then
+          Font.Color:=clBtnText
+        else
+          Font.Color:=clWindow;
         font.Size:=8;
         lf:=Rect.Left+bm.width+3;
         tp:=Rect.top+((Rect.bottom-Rect.Top)div 2)-(TextHeight('A') div 2);

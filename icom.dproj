@@ -73,15 +73,16 @@
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<VerInfo_Release>1</VerInfo_Release>
 			<DCC_UNSAFE_TYPE>true</DCC_UNSAFE_TYPE>
 			<DCC_UNSAFE_CAST>true</DCC_UNSAFE_CAST>
 			<DCC_UNSAFE_CODE>true</DCC_UNSAFE_CODE>
 			<VerInfo_MajorVer>5</VerInfo_MajorVer>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<VerInfo_MinorVer>4</VerInfo_MinorVer>
+			<VerInfo_MinorVer>5</VerInfo_MinorVer>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<VerInfo_Build>5965</VerInfo_Build>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=5.4.0.5965;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Build>6100</VerInfo_Build>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=5.5.1.6100;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
@@ -129,11 +130,16 @@
 			<DCCReference Include="winnet.pas"/>
 			<DCCReference Include="myplayer.pas"/>
 			<DCCReference Include="simpleEncrypt.pas">
-				<Form>$R .\myresource\smile\smile.res</Form>
+				<Form>,
+  commonlib in &apos;commonlib.pas&apos;,
+  myPageControl in &apos;myPageControl.pas&apos;,
+  ieredimer in &apos;Lib\ieredimer.pas&apos;;
+
+{$R .\myresource\smile_new\smile.res</Form>
 			</DCCReference>
-			<DCCReference Include="commonlib.pas">
-				<Form>$R .\myresource\smile\smile.res</Form>
-			</DCCReference>
+			<DCCReference Include="commonlib.pas"/>
+			<DCCReference Include="myPageControl.pas"/>
+			<DCCReference Include="Lib\ieredimer.pas"/>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -160,7 +166,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">5965</VersionInfo>
+						<VersionInfo Name="Build">6100</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -172,7 +178,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">1.0.0.5965</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.0.0.6100</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

@@ -3,10 +3,10 @@ unit IEbrowser;
 interface
 
 uses windows, SHDocVw, activex, classes, forms, Dialogs, Controls, StdCtrls, extctrls,
-     Graphics, variants, OleCtrls, sysutils, math, MSHTML_TLB;
+     Graphics, variants, OleCtrls, sysutils, math, MSHTML_TLB, ieredimer;
 
 type
-  TIEBrowser=class(TWebBrowser)
+  TIEBrowser=class(TFramelessIE)
   private
     IEPanel:Tpanel;
     FAlign: TAlign;
@@ -24,7 +24,6 @@ type
     procedure SetScrollPos3(value:integer);
     function GetScrollHeight:integer;
     function GetScrollHeight2:integer;
-    //procedure setFlat(ASender: TObject; const pDisp: IDispatch; const URL: OleVariant);
   public
     ImageCacheCount: integer;
     ScrollBars: TscrollStyle;
@@ -51,7 +50,6 @@ type
     procedure LoadFromFile(fname:string);
     procedure LoadFromString(Text: string);
     procedure LoadFromString2(Text: string);
-    //procedure ReloadFile;
     Procedure ReAlign;
     procedure selectall;
     function GetFieldValue(formNUmber: integer; const fieldName: string; const instance: integer=0):string;
@@ -135,11 +133,6 @@ begin
   Self.ReAlign;
 end;
 
-{procedure TIEBrowser.setFlat(ASender: TObject; const pDisp: IDispatch; const URL: OleVariant);
-begin
-  OleObject.document.body.style.borderstyle := 'none';
-end;}
-
 Constructor TIEBrowser.Create(AControl: TComponent);
 begin
   IEPanel:=Tpanel.Create(Acontrol);
@@ -191,13 +184,6 @@ begin
   ExecWB(OLECMDID_COPY, OLECMDEXECOPT_PROMPTUSER);
 end;
 
-{
-procedure TIEBrowser.ReloadFile;
-begin
-  if fileexists(FCurrentFile) then
-    loadfromfile(FCurrentFile);
-end;
-}
 // исходный текст html-страницы
 function TIEBrowser.GetDocument:string;
 begin
@@ -207,37 +193,6 @@ begin
   end;
 end;
 
-// ansi или юникодный файл
-{Procedure TIEBrowser.SaveHtml(FileName:string);
-var
-  PersistStream: IPersistStreamInit;
-  sStream: TStringStream;
-  Stream: IStream;
-  SaveResult: HRESULT;
-begin
-  if Assigned(Document)and(Ready) then
-  begin
-
-    PersistStream := Document as IPersistStreamInit;
-    sStream := TStringStream.Create('');
-    try
-      Stream := TStreamAdapter.Create(sStream, soReference) as IStream;
-      SaveResult := PersistStream.Save(Stream, True);
-      if FAILED(SaveResult) then
-         MessageBox(Handle, 'Fail to save HTML source', 'Error', 0)
-      else
-      begin
-        sStream.Position:=0;
-        sstream.SaveToFile(FileName);
-      end;
-      Stream := nil;
-    finally
-      sStream.Free;
-    end;
-  end;
-end;
-}
-// дополненный/очищенный оригиал
 Procedure TIEBrowser.SaveHtml(FileName:string);
 var
   ss: TStringStream;
@@ -246,31 +201,7 @@ begin
   ss.SaveToFile(FileName);
   ss.Free;
 end;
-{
-// ansi или юникодный файл
-procedure TIEBrowser.SaveHtml3(const FileName: string);
-var
-  FileStream: TFileStream;
-begin
-  FileStream := TFileStream.Create(FileName, fmCreate);
-  try
-    SaveToStream(FileStream);
-  finally
-    FileStream.Free;
-  end;
-end;
 
-// дополненный/очищенный оригинал
-Procedure TIEBrowser.SaveHtml4(FileName:string);
-var
-  sl:tstringlist;
-begin
-  sl := tstringlist.Create;
-  sl.Text := DocumentSource;
-  sl.SaveToFile(filename);
-  sl.Free;
-end;
-}
 function TIEBrowser.SaveToString: string;
 var
   StringStream: TStringStream;
@@ -309,69 +240,20 @@ begin
   LoadFromString(sl.Text);
   sl.Free;
 end;
-{
-// scrollpos после этого ставится неправильно
-procedure TIEBrowser.LoadFromFile2(fname:string);
-var
-  Stream: TStream;
-begin
-  Stream := TFileStream.Create(FName, fmOpenRead or fmShareDenyWrite);
-  try
-    Stream.Seek(0, 0);
-    if Assigned(Document) then
-    begin
-      (Document as IPersistStreamInit).Load(TStreamAdapter.Create(Stream));
-    end;
-  finally
-    Stream.Free;
-  end;
-end;
 
-procedure TIEBrowser.LoadFromFile3(const FileName: string);
-var
-  FileStream: TFileStream;
-begin
-  FileStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
-  try
-    LoadFromStream(FileStream);
-  finally
-    FileStream.Free;
-  end;
-end;
-
-procedure TIEBrowser.LoadFromFile4(const FileName: string);
-var
-  StringStream: TStringStream;
-begin
-  StringStream := TStringStream.Create('');
-  StringStream.LoadFromFile(FileName);
-  try
-    LoadFromStream(StringStream);
-  finally
-    StringStream.Free;
-  end;
-end;
-}
 // вся высота документа
 function TIEBrowser.GetScrollHeight:integer;
 var
-//  doc: IHTMLDocument3;
   body: variant;
-//  html: IHTMLElement;
   h,h1,h2,h3:extended;
 begin
   if Assigned(Document)and(Ready) then
   begin
     body := OleObject.document.body;
-    //html = document.documentElement;
-
     h1 := Math.max(body.scrollHeight, body.offsetHeight);
     h2 := math.Max(body.clientHeight, body.scrollHeight);
     h3 := body.offsetHeight;
     h := math.Max(math.max(h1, h2), h3);
-   // Document.QueryInterface(IHTMLDocument3, Doc);
-   // result := ((Doc as IHTMLDocument3).documentElement as IHTMLElement2).scrollHeight;
-   // Doc := nil;
     Result := trunc(h);
   end
   else
@@ -392,19 +274,6 @@ begin
     Result := 0;
 end;
 
-{
-procedure TIEBrowser.SetScrollPos(value:integer);
-var
-  doc: IHTMLDocument3;
-begin
-  if Assigned(Document)and(ready) then
-  begin
-    Document.QueryInterface(IHTMLDocument3, Doc);
-    ((Doc as IHTMLDocument3).documentElement as IHTMLElement2).scrollTop := value;
-    doc := nil;
-  end;
-end;
-}
 // высота документа без отступов
 function TIEBrowser.GetScrollHeight2:integer;
 begin
@@ -434,12 +303,7 @@ begin
   else
     result := s1;
 end;
-{
-procedure TIEBrowser.SetScrollPos2(value:integer);
-begin
-  OleObject.document.body.ScrollTop := value;
-end;
-}
+
 procedure TIEBrowser.SetScrollPos3(value:integer);
 begin
   if Assigned(document) and ready then
@@ -487,72 +351,7 @@ begin
     end;
   end;
 end;
-{
-// scrollpos после этого ставится неправильно
-procedure TIEBrowser.LoadFromString2(Text: string);
-var
-  Stream: TStringStream;
-begin
-  if Assigned(Document)and(Ready) then
-  begin
-    Self.Enabled := False; // предотвращает захват курсора
-    try
-      Stream := TStringStream.Create(Text);
-      try
-        (Document as IPersistStreamInit).Load(TStreamAdapter.Create(Stream));
-      finally
-        myFreeAndNil(Stream);
-      end;
-    finally
-      Self.Enabled := True;
-    end;
-  end;
-end;
 
-procedure TIEBrowser.LoadFromString3(text: string);
-var
-  doc: IHTMLDocument2;
-begin
-  if Assigned(Document)and(Ready) then
-  begin
-    Self.Enabled := False; // предотвращает захват курсора
-    try
-      Document.QueryInterface(IHTMLDocument2, Doc);
-      if doc <> nil then
-      begin
-        try
-          Doc.body.innerHTML := Text;
-          Doc.Close;
-          doc := nil;
-        except
-        end;
-      end;
-    finally
-      Self.Enabled := True;
-    end;
-  end;
-end;
-
-procedure TIEBrowser.LoadFromString4(text: string);
-var
-  StringStream: TStringStream;
-begin
-  if Assigned(Document)and(Ready) then
-  begin
-    Self.Enabled := False; // предотвращает захват курсора
-    try
-      StringStream := TStringStream.Create(text);
-      try
-        LoadFromStream(StringStream);
-      finally
-        StringStream.Free;
-      end;
-    finally
-      Self.Enabled := True;
-    end;
-  end;
-end;
-}
 procedure TIEBrowser.LoadFromStream(const Stream: TStream);
 var
   PersistStreamInit: IPersistStreamInit;

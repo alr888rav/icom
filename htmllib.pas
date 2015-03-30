@@ -10,7 +10,6 @@ function NewHtml:string;
 
 Function ImgSize(msg: string): string;
 function DetectURL(msg: string): string;
-//Procedure NewHtmlFile(fname: string);
 function AddSmiles(msg: string): string;
 function html2text(msg: string): string;
 function htmlcode2text(html: string): string;
@@ -850,53 +849,6 @@ begin
   ht.Free;
 end;
 
-(* // пустой html
-procedure NewHtmlFile(fname: string);
-var
-  fl: text;
-begin
-  if Pos('.html', ansilowercase(fname)) = 0 then
-    fname := fname + '.html';
-  AssignFile(fl, fname);
-  rewrite(fl);
-  writeln(fl,'<!DOCTYPE html>');
-  writeln(fl,'<html>');
-  writeln(fl,'<head>');
-  writeln(fl,'<meta content="text/html; charset=Windows-1251" http-equiv="content-type">');
-  writeln(fl,'<title>ic</title>');
-  writeln(fl,
-  '<style type="text/css"> '+
-  'blockquote { '+
-  ' width: 80%; '+
-  ' border-left:solid #ff5a00 5px; '+
-  ' margin:10px 40px; '+
-  ' padding:5px; '+
-  ' color:#333; '+
-  ' font-family: Georgia; '+
-  ' font-style:italic; '+
-  ' font-size:12px; '+
-  ' background:#CCCCFF; '+
-  '} '+
-  'hr { '+
-  ' color: #CCCCFF; '+
-  ' height: 0px; '+
-  ' noshade; '+
-  ' border: none; '+
-  ' border-top: dotted 1px gray; '+
-  '} '+
-  'A:link { color: blue; text-decoration: underline; } '+
-  'A:hover { color: red; text-decoration: underline; } '+
-  'A:visited { color: blue; text-decoration: underline; } '+
-  'body { background: '+htmlcolor(Setup.WinColor)+'; } '+
-  '</style> ');
-  writeln(fl,'</head>');
-  writeln(fl,'<body>');
-  writeln(fl,'<font size="2" color="black">');
-  writeln(fl,'</html>');
-  CloseFile(fl);
-end;
-*)
-
 procedure gif2jpg(fname:string);
 var
   tempGif: TjvGifAnimator;
@@ -1083,8 +1035,7 @@ begin
         if Pos('</BODY>', ansiUpperCase(buf.Strings[i])) <> 0 then
         begin
           newmsg := DetectURL(msg);
-          //if Setup.zoom then
-            newmsg := ImgSize(newmsg);
+          newmsg := ImgSize(newmsg);
           // уберем рамку картинок
           newmsg := stringreplace(newmsg, '<img ', '<img border="0" ', [rfReplaceall, rfIgnoreCase]);
           buf.insert(i, newmsg);
@@ -1127,43 +1078,6 @@ begin
   result := '';
   //result := ' onmouseout="document.getElementById('+id+').style.background='''+htmlcolor(setup.WinColor)+''';" ';
 end;
-{
-function DelBtnHTML(FromName, msg, color:string):string;
-var
-  id: string;
-  fn: string;
-begin
-  id := inttostr(GetTickCount);
-  fn := Setup.sysfont.Name;
-  if Setup.delbtn = 0 then // нет
-    result := '<div '+onmouseover(id)+onmouseout(id)+' id=' + id + ' nick="' + trim(FromName) + '"><span style="font-size:'
-      + inttostr(Setup.sysfont.size) + 'pt; font-family:' + fn + '; color:' + color + ';">'
-      + msg + '</span></div>'
-  else if Setup.delbtn = 1 then // цветная справа
-    result := '<div '+onmouseover(id)+onmouseout(id)+' id=' + id + ' nick="' + trim(FromName) + '"><span style="font-size:'
-      + inttostr(Setup.sysfont.size) + 'pt; font-family:' + fn + '; color:' + color + ';">' + msg
-      + IIF(Setup.quotebtn, '&nbsp;&nbsp;<a href="icom6://' + id + '">' + HtmlButton('Q', false) + '</a>', '')
-      + '&nbsp;&nbsp;<a href="icom4://' + id + '">' + HtmlButton('X', false) + '</a>'
-      + '</span></div>'
-  else if Setup.delbtn = 2 then // прозрачная справа
-    result := '<div '+onmouseover(id)+onmouseout(id)+' id=' + id + ' nick="' + trim(FromName) + '"><span style="font-size:'
-      + inttostr(Setup.sysfont.size) + 'pt; font-family:' + fn + '; color:' + color + ';">' + msg
-      + IIF(Setup.quotebtn, '&nbsp;&nbsp;<a href="icom6://' + id + '">' + HtmlButton('Q', true) + '</a>', '')
-      + '&nbsp;&nbsp;<a href="icom4://' + id + '">' + HtmlButton('X', true) + '</a>'
-      + '</span></div>'
-  else if Setup.delbtn = 3 then // цветная слева
-    result := '<div '+onmouseover(id)+onmouseout(id)+' id=' + id + ' nick="' + trim(FromName) + '"><span style="font-size:'
-      + inttostr(Setup.sysfont.size) + 'pt; font-family:' + fn + '; color:' + color + ';">'
-      + '&nbsp;<a href="icom4://' + id + '">' +  HtmlButton('X', false) + '</a>&nbsp;'
-      + IIF(Setup.quotebtn, '&nbsp;<a href="icom6://' + id + '">' + HtmlButton('Q', false) + '</a>', '')
-      + '&nbsp;' + msg + '</span></div>'
-  else if Setup.delbtn = 4 then // прозрачная слева
-    result := '<div '+onmouseover(id)+onmouseout(id)+' id=' + id + ' nick="' + trim(FromName) + '"><span style="font-size:'
-      + inttostr(Setup.sysfont.size) + 'pt; font-family:' + fn + '; color:' + color + ';">'
-      + '&nbsp;<a href="icom4://' + id + '">' + HtmlButton('X', true) + '</a>&nbsp;'
-      + IIF(Setup.quotebtn, '&nbsp;<a href="icom6://' + id + '">' + HtmlButton('Q', true)+'</a>', '')
-      + '&nbsp;' + msg + '</span></div>';
-end;  }
 
 function DelBtnHTML2(FromName, msg, color:string; id:string):string;
 var
@@ -1204,7 +1118,6 @@ end;
 function AddSysText2HTML2(FromName, ch_name: string; msg: string; color: string; id:string):string;
 begin
   try
-    //msg := DelBtnHTML(FromName, msg, color);
     msg := DelBtnHTML2(FromName, msg, color, id);
     msg := Plugins.ExecBeforeSys(FromName, ch_name, msg);
     result := msg;
@@ -1233,7 +1146,7 @@ var
 begin
   sl := TstringList.Create;
   sl.add('<!DOCTYPE html>');
-  sl.add('<html>');
+  sl.add('<html style="border:none;">');
   sl.add('<head>');
   sl.add('<meta content="text/html; charset=Windows-1251" http-equiv="content-type">');
   sl.add('<title>ic</title>');
@@ -1278,19 +1191,6 @@ begin
   sl.Add('  elem2.style.display = elem2.style.display === ''none'' ? '''' : ''none'';  ');
   sl.Add('}');
   sl.Add('</script>');
-//  sl.add(
-//  '<script type="text/javascript"> function goend() { scroll(0,1000000); }');
-(*  sl.add(
-  '<script type="text/javascript"> '+
-	'function addmsg(msg, toend) { '+
-  '  var container = document.createElement(''div''); '+
-  '  container.innerHTML = msg; '+
-	'  document.body.appendChild(container); '+
-	'	 if (toend==1) { '+
-	'	  scroll(0,1000000); '+
-	'	 } '+
-	'} '+
-  '</script>'); *)
   sl.add('</head>');
   sl.add('<body>');
   sl.add('<font size="2" color="black">');

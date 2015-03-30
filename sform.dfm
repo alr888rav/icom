@@ -204,7 +204,7 @@ object setupform: Tsetupform
       Height = 500
       Margins.Right = 0
       Margins.Bottom = 0
-      ActivePage = InterfaceTabSheet
+      ActivePage = MyTabSheet
       Align = alTop
       Constraints.MinHeight = 500
       MultiLine = True
@@ -217,6 +217,10 @@ object setupform: Tsetupform
       OnDrawTab = PageControl2DrawTab
       object MyTabSheet: TTabSheet
         Caption = #1051#1080#1095#1085#1099#1077
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Panel14: TPanel
           Left = 0
           Top = 0
@@ -480,27 +484,14 @@ object setupform: Tsetupform
           Left = 0
           Top = 297
           Width = 644
-          Height = 128
+          Height = 112
           Align = alTop
           BevelOuter = bvNone
           Color = clWindow
           TabOrder = 3
-          object PagesPosLabel: TLabel
-            Left = 10
-            Top = 9
-            Width = 75
-            Height = 13
-            Caption = #1056#1072#1089#1087#1086#1083#1086#1078#1077#1085#1080#1077
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
-            ParentFont = False
-          end
           object PagesIconLabel: TLabel
             Left = 10
-            Top = 34
+            Top = 8
             Width = 36
             Height = 13
             Caption = #1047#1085#1072#1095#1086#1082
@@ -511,36 +502,9 @@ object setupform: Tsetupform
             Font.Style = []
             ParentFont = False
           end
-          object Label1: TLabel
-            Left = 303
-            Top = 6
-            Width = 106
-            Height = 13
-            Caption = '* '#1090#1088#1077#1073#1091#1077#1090#1089#1103' '#1088#1077#1089#1090#1072#1088#1090
-          end
-          object ComboTabs: TComboBox
-            Left = 160
-            Top = 4
-            Width = 129
-            Height = 21
-            BevelKind = bkFlat
-            Style = csDropDownList
-            Ctl3D = False
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
-            ParentCtl3D = False
-            ParentFont = False
-            TabOrder = 0
-            Items.Strings = (
-              #1042#1074#1077#1088#1093#1091
-              #1042#1085#1080#1079#1091)
-          end
           object ComboIcons: TComboBox
             Left = 160
-            Top = 32
+            Top = 6
             Width = 129
             Height = 21
             BevelKind = bkFlat
@@ -551,7 +515,7 @@ object setupform: Tsetupform
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            TabOrder = 1
+            TabOrder = 0
             Items.Strings = (
               #1060#1083#1072#1078#1082#1080' 1'
               #1060#1083#1072#1078#1082#1080' 2'
@@ -559,7 +523,7 @@ object setupform: Tsetupform
           end
           object CheckActPage: TCheckBox
             Left = 10
-            Top = 59
+            Top = 33
             Width = 324
             Height = 17
             Caption = #1055#1077#1088#1077#1093#1086#1076#1080#1090#1100' '#1085#1072' '#1082#1072#1085#1072#1083'  '#1089' '#1085#1077#1087#1088#1086#1095#1080#1090#1072#1085#1085#1099#1084#1080' '#1087#1088#1080' '#1086#1090#1082#1088#1099#1090#1080#1080
@@ -569,11 +533,11 @@ object setupform: Tsetupform
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            TabOrder = 2
+            TabOrder = 1
           end
           object CheckRGB: TCheckBox
             Left = 10
-            Top = 84
+            Top = 58
             Width = 281
             Height = 17
             Caption = #1055#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1074' '#1084#1077#1085#1102' '#1047#1077#1083'/'#1057#1080#1085'/'#1050#1088' '#1082#1072#1085#1072#1083#1099
@@ -583,20 +547,20 @@ object setupform: Tsetupform
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
-            TabOrder = 3
+            TabOrder = 2
           end
           object CheckPagesOneLine: TCheckBox
             Left = 10
-            Top = 107
+            Top = 81
             Width = 279
             Height = 17
             Caption = #1050#1072#1085#1072#1083#1099' '#1074' '#1085#1077#1089#1082#1086#1083#1100#1082#1086' '#1089#1090#1088#1086#1082
-            TabOrder = 4
+            TabOrder = 3
           end
         end
         object Panel12: TPanel
           Left = 0
-          Top = 425
+          Top = 409
           Width = 644
           Height = 20
           Align = alTop
@@ -611,16 +575,18 @@ object setupform: Tsetupform
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 4
+          ExplicitTop = 425
         end
         object Panel13: TPanel
           Left = 0
-          Top = 445
+          Top = 429
           Width = 644
           Height = 41
           Align = alTop
           BevelOuter = bvNone
           Color = clWindow
           TabOrder = 5
+          ExplicitTop = 445
           object MemoColor: TControlBar
             Left = 16
             Top = 10
@@ -1510,6 +1476,10 @@ object setupform: Tsetupform
       object TabSheet3: TTabSheet
         Caption = #1058#1088#1077#1081
         ImageIndex = 7
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Panel30: TPanel
           Left = 0
           Top = 0
@@ -1559,6 +1529,10 @@ object setupform: Tsetupform
       object TabSheet4: TTabSheet
         Caption = #1047#1074#1091#1082#1080
         ImageIndex = 8
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Panel38: TPanel
           Left = 0
           Top = 0
@@ -2346,6 +2320,10 @@ object setupform: Tsetupform
         Margins.Left = 0
         Caption = #1047#1072#1097#1080#1090#1072
         ImageIndex = 11
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Panel4: TPanel
           Left = 0
           Top = 0
@@ -2503,7 +2481,7 @@ object setupform: Tsetupform
     Left = 454
     Top = 344
     Bitmap = {
-      494C01010B009000140216001900FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B0090001C0216001900FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000004B00000001002000000000002067
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

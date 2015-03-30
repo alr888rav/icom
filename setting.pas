@@ -70,7 +70,7 @@ type
     sndfile: string;
     snderror: string;
     // расположение закладок каналов
-    tabspos: integer;
+    //tabspos: integer;
     // кнопка скрола
     autoscroll: boolean;
     // подтверждения открытия ссылки
@@ -812,7 +812,7 @@ begin
   Collapselong := true;
   showinfo := true;
   dr := '';
-  tabspos := 0;
+  //tabspos := 0;
   confirmdelete := true;
   confirmdelmsg := true;
   setnick := true;

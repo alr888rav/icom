@@ -47,7 +47,9 @@ uses
   winnet in 'winnet.pas',
   myplayer in 'myplayer.pas',
   simpleEncrypt in 'simpleEncrypt.pas',
-  commonlib in 'commonlib.pas';
+  commonlib in 'commonlib.pas',
+  myPageControl in 'myPageControl.pas',
+  ieredimer in 'Lib\ieredimer.pas';
 
 {$R .\myresource\smile_new\smile.res }
 {$R .\myresource\add\add.res }

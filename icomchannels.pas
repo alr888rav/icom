@@ -56,7 +56,6 @@ type
     procedure BlinkTimerTimer(Sender: TObject);
     function chname2index(ch: string): integer;
   public
-    //green, blue, red: string;
     ChannelIcons: integer;
     ChannelsForm: TForm;
     BlinkTimer: TTimer;
@@ -164,10 +163,10 @@ begin
       // уберем рамку картинок
       msg := stringreplace(msg, '<img ', '<img border="0" ', [rfReplaceall, rfIgnoreCase]);
       fhtml.insert(i, msg);
-      addHtmlDirect(msg);
       break;
     end;
   end;
+  addHtmlDirect(msg);
   fmodified := True;
 end;
 
@@ -268,14 +267,15 @@ begin
     TabSheet := TTabSheet.Create(Acontrol.parent);
     TabSheet.PageControl := TPageControl(Acontrol);
     Browser := TIcomViewer.Create(TabSheet);
+    Browser.LoadFromString(fhtml.Text);
   end;
 end;
 
 destructor TChannel.Destroy;
 begin
-    myFreeAndNil(Browser);
-    myFreeAndNil(TabSheet);
-    myFreeAndNil(fhtml);
+  myFreeAndNil(Browser);
+  myFreeAndNil(TabSheet);
+  myFreeAndNil(fhtml);
 end;
 
 // поставим иконки каналов

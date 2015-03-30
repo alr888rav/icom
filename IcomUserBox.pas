@@ -22,7 +22,6 @@ Type
     Display: TIcomViewer;
     nn: integer;
     ix, iy: Integer;
-    //ImageList: TImageList;
     UserList: TUsers;
     Constructor Create(AOwner: TComponent); override;
     procedure UpdateBox(force: Boolean=false);
@@ -127,11 +126,10 @@ var
       away := lang.get('none') + ': ' + inttostr(hh) + lang.get('hour') + ' ' + inttostr(mm) +
         lang.get('min') + ' ' + inttostr(ss) + lang.get('sek');
     end;
-
     result := '<div id='+#39+UserList[index2].name+#39+' style="display: none; position: relative; z-index: 100; left: 0px; top: 0px; border: solid black 1px; padding: 2px; background-color: '+SAND+'; text-align: justify; font-size: 10px; width: 250px; height: 150px; line-height: 20px;">'+
       '<table width=100% border=0>'+
       '<tr>'+
-          '<td width=60%>'+
+          '<td width=60% style="font-size: 10px;">'+
           '<div>'+lang.get('nick')+': '+UserList[index2].name+'</div><br>'+
           '<div>'+lang.get('ver')+': '+ UserList[index2].ver+'</div>'+
           '<div>'+UserList[index2].winver+'</div>';
@@ -158,7 +156,7 @@ var
           '</td>'+
       '</tr>';
       if away > '' then
-        result := result + '<tr><td colspan="2"><hr><div>'+away+'</div></td></tr>';
+        result := result + '<tr style="font-size: 10px;"><td colspan="2"><hr><div>'+away+'</div></td></tr>';
       result := result + '</table></div>';
   end;
   function nick(index: integer; txt:string;color:Tcolor):string;
@@ -208,10 +206,10 @@ begin
   if (not force)and(not user_list.modified) then
     exit;
   page := TStringlist.Create;
-  if force then
-  begin
+  //if force then
+  //begin
     page.Add('<!DOCTYPE html>');
-    page.Add('<html>');
+    page.Add('<html style="border:none;">');
     page.Add('<head>');
     page.Add('<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">');
     page.Add('<style>');
@@ -222,7 +220,7 @@ begin
     page.Add('</style>');
     page.Add('</head>');
     page.Add('<body style="background-color:'+htmlcolor(setup.WinColor)+'; font-family: arial; font-size: 12px; font-weight: bold;">');
-  end;
+  //end;
   try
     page.Add('<div id=''list''>');
     for i := 0 to Items.Count -1 do
@@ -280,8 +278,6 @@ begin
       lists := Display.GetElementById('list');
       IHTMLElement(lists).setAttribute('innerhtml', page.text, 0);
     end;
-    //Display.SaveHtml(htmldir+'ul.html');
-    //page.SaveToFile(htmldir+'ul.html');
     mainForm.MySetFocus(mainForm.memoin, true);
     page.Free;
     user_list.modified := false;
